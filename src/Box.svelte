@@ -4,10 +4,9 @@
 
 <style>
   div {
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    height: 100%;
     background-color: #f0f0f0;
-    margin: 3px;
     display: inline-block;
     transition: background-color 0.3s ease-in;
     cursor: pointer;

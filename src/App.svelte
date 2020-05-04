@@ -1,19 +1,19 @@
 <script>
   import Grid from "./Grid.svelte";
   import { updateGrid } from "./game";
-  let title = "Game of Life";
 
-  let height = 18,
-    width = 40;
+  let height = 30,
+    width = 60,
+    interval,
+    paused = true,
+    blockSize = 20,
+    rows;
 
-  $: rows = Array(height)
-    .fill(null)
-    .map(() => Array(width).fill(false));
-
-  let interval;
+  reset();
 
   function play() {
     interval = setInterval(step, 1000);
+    paused = false;
   }
 
   function step() {
@@ -22,25 +22,51 @@
 
   function pause() {
     clearInterval(interval);
+    paused = true;
+  }
+
+  function reset() {
+    rows = Array(height)
+      .fill(null)
+      .map(() => Array(width).fill(false));
   }
 </script>
 
 <style>
-  h1 {
-    font-size: 1.3rem;
+  .controls {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 1.5rem;
+    padding: 1rem;
+    background-color: #f7f7f7;
+
+    display: flex;
+    align-items: center;
+  }
+  .grid-container {
+    overflow: auto;
+    width: 100vw;
+    height: calc(100vh - 3.5rem);
   }
 </style>
 
 <main>
-  <h1>{title}</h1>
+  <div class="grid-container">
+    <Grid {rows} {width} {blockSize} />
+  </div>
 
-  <Grid {rows} cols={width} />
-
-  <button on:click={play}>play</button>
-  <button on:click={pause}>pause</button>
-  <button on:click={step}>step</button>
-  <span>
-    {width}
-    <input id="width" type="range" bind:value={width} min="1" max="40" />
-  </span>
+  <div class="controls">
+    {#if paused}
+      <button on:click={play}>play</button>
+      <button on:click={step}>step</button>
+    {:else}
+      <button on:click={pause}>pause</button>
+    {/if}
+    <div>
+      {blockSize}
+      <input type="range" bind:value={blockSize} min="10" max="40" />
+    </div>
+    <button on:click={reset}>reset</button>
+  </div>
 </main>
