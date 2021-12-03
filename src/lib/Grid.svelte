@@ -20,7 +20,7 @@
 
     for (let i = start.i; i <= end.i; i++) {
       for (let j = start.j; j <= end.j; j++) {
-        rows[i][j] = true;
+        rows[i][j] = !rows[i][j];
       }
     }
 
